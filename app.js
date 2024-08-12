@@ -6,11 +6,13 @@ const BlogRoute = require("./routes/blog.routes")
 const mongoose = require("mongoose");
 const cookiepaser = require("cookie-parser");
 const { checkForauthenticationCookie } = require("./middleware/authentication");
-const Blog = require("./models/blog.model")
-const PORT = 8000
+const Blog = require("./models/blog.model");
+
+require("dotenv").config();
+const PORT = process.env.PORT || 8000
 
 //DbConection
-mongoose.connect("mongodb://127.0.0.1:27017/Blogify")
+mongoose.connect(process.env.MONGO_URL)
 .then(() => console.log("MongoDb Conected!"))
 .catch((err) => console.log("mongoDb Disconected!", err))
 
@@ -35,4 +37,4 @@ app.get("/", async (req, res)=>{
 app.use("/user", Userrouter);
 app.use("/Blog", BlogRoute);
 
-app.listen(PORT, ()=> console.log("server stated!"));
+app.listen(PORT, ()=> console.log(`Server Stated In PORT: ${PORT}`));

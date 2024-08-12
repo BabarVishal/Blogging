@@ -8,13 +8,13 @@ const CommentSchema = new Schema({
 
     blogId:{
         type: Schema.Types.ObjectId,
-        req: "Blog"
+        ref: "blog",
 
     },
 
     createdBy:{
         type: Schema.Types.ObjectId,
-        req: "user"
+        ref: "user",
     },
 },{
     timestamps: true
