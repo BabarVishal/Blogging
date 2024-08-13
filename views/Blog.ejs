@@ -41,6 +41,7 @@
             margin-top: 1rem;
         }
         .author-info img {
+            border: 1px solid white;
             border-radius: 50%;
             margin-right: 1rem;
         }
@@ -53,9 +54,14 @@
         .comment-item {
             border-bottom: 1px solid #333; /* Dark border for comment items */
             padding: 0.5rem 0;
+            
         }
         .comment-item:last-child {
             border-bottom: none;
+            
+        }
+        .redius img {
+            border: 1px solid white;
         }
         .form-control {
             background-color: #1e1e1e; /* Dark background for form controls */
@@ -92,7 +98,7 @@
     </div>
 
     <div class="container mt-4 author-info">
-        <img src="<%- blog.createdBy.profileImgURL %>" width="100" alt="Author Profile Image">
+        <img src="<%- blog.createdBy.profileImgURL %>"  alt="Profile">
         <div>
             <strong><%- blog.createdBy.fullname %></strong>
         </div>
@@ -111,7 +117,7 @@
         <div class="mt-4">
             <% comments.forEach(comment => { %>
                 <div class="comment-item">
-                    <div class="d-flex align-items-center mb-2">
+                    <div class="d-flex align-items-center mb-2 redius">
                         <img src="<%- comment.createdBy.profileImgURL %>" width="50" alt="Profile " class="rounded-circle me-2">
                         <p><%- comment.createdBy.fullname %></p>
                     </div>

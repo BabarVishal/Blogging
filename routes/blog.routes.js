@@ -26,7 +26,6 @@ router.get("/add-new",(req, res) => {
 })
 
 router.get("/:id", async (req, res) => {
-  try {
     const blog = await Blog.findById(req.params.id).populate("createdBy");
     const comments = await Coments.find({ blogId: req.params.id }).populate("createdBy");
     return res.render("blog", {
@@ -34,10 +33,6 @@ router.get("/:id", async (req, res) => {
       blog,
       comments,
     });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).send("Internal Server Error");
-  }
 });
 
 

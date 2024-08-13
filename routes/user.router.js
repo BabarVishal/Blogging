@@ -31,8 +31,11 @@ router.post("/signup", async(req, res) => {
         email,
         password
     });
-    console.log("User signup", user);
-    return res.redirect("/");
+    // console.log("User signup", user);
+    return res.redirect("/",{
+        user: req.user,
+        user,
+    });
 })
 
 router.get("/logout", (req, res) => {
