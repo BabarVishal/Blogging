@@ -1,135 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%- blog.title %> - Blogify</title>
-    <!-- Include Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="/path-to-your-custom-css.css" rel="stylesheet">
+  <head>
     <%- include('./partials/head') %>
-    <style>
-        body {
-            background-color: #121212; /* Dark background for the page */
-            color: #e0e0e0; /* Light text color */
-        }
-        .navbar {
-            background-color: #1f1f1f; /* Dark background for navbar */
-        }
-        .navbar-brand, .nav-link {
-            color: #e0e0e0 !important; /* Light text color for navbar */
-        }
-        .navbar-brand:hover, .nav-link:hover {
-            color: #007bff !important; /* Hover color for links */
-        }
-        .blog-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Rounded corners */
-        }
-        .blog-content {
-            white-space: pre-wrap;
-            background-color: #1e1e1e; /* Dark background for content */
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-        }
-        .author-info {
-            display: flex;
-            align-items: center;
-            margin-top: 1rem;
-        }
-        .author-info img {
-            border: 1px solid white;
-            border-radius: 50%;
-            margin-right: 1rem;
-        }
-        .comment-section {
-            background-color: #1e1e1e; /* Dark background for comments section */
-            border-radius: .375rem;
-            padding: 1rem;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-        }
-        .comment-item {
-            border-bottom: 1px solid #333; /* Dark border for comment items */
-            padding: 0.5rem 0;
-            
-        }
-        .comment-item:last-child {
-            border-bottom: none;
-            
-        }
-        .redius img {
-            border: 1px solid white;
-        }
-        .form-control {
-            background-color: #1e1e1e; /* Dark background for form controls */
-            color: #e0e0e0; /* Light text color */
-            border: 1px solid #333; /* Dark border */
-        }
-        .form-control:focus {
-            border-color: #007bff; /* Focus border color */
-            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25); /* Focus shadow */
-        }
-        .btn-primary {
-            background-color: #007bff; /* Bootstrap primary button color */
-            border-color: #007bff;
-            border-radius: 4px; /* Rounded corners */
-        }
-        .btn-primary:hover {
-            background-color: #0056b3; /* Darker shade on hover */
-            border-color: #004085;
-        }
-        .btn-primary:focus {
-            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5); /* Focus shadow */
-        }
-    </style>
-</head>
-<body>
-    <%- include('./partials/navbar') %>
+    <title>Blog</title>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
 
     <div class="container mt-4">
-        <h1 class="mb-3"><%- blog.title %></h1>
-        <img src="<%- blog.coverImageURL %>" class="blog-image mb-3" alt="Cover Image">
-        <div class="blog-content">
-            <%- blog.body %>
-        </div>
+      <h1><%= blog.title %></h1>
+      <img src="<%= blog.coverImageURL %>" width="700px" />
+      <pre class="mt-3"><%= blog.body %></pre>
     </div>
 
-    <div class="container mt-4 author-info">
-        <img src="<%- blog.createdBy.profileImgURL %>"  alt="Profile">
+    <div class="container mt-4">
+      <img src="<%= blog.createdBy.profileImageURL %>" width="50px" /> <%=
+      blog.createdBy.fullName %>
+    </div>
+
+    <div class="container mt-3">
+      <h1>Comments (<%= comments.length %>)</h1>
+      <% if (locals.user) { %>
+      <form action="/blog/comment/<%= blog._id %>" method="post">
+        <div class="mb-3">
+          <input
+            type="text"
+            name="content"
+            class="form-control"
+            placeholder="Enter your comment"
+          />
+          <button class="btn btn-sm btn-primary" type="submit">Add</button>
+        </div>
+      </form>
+
+      <% } %>
+      <div class="mt-3">
+        <% comments.forEach(comment => { %>
         <div>
-            <strong><%- blog.createdBy.fullname %></strong>
+          <img src="<%= comment.createdBy.profileImageURL %>" width="50px" />
+          <%= comment.createdBy.fullName %>
+          <pre><%= comment.content %></pre>
         </div>
+        <% }) %>
+      </div>
     </div>
 
-    <div class="container mt-4 comment-section">
-        <h2 class="mb-3">Comments (<%- comments.length %>)</h2>
-        <% if (locals.user) { %>
-            <form action="/blog/comment/<%- blog._id %>" method="post">
-                <div class="mb-3">
-                    <input type="text" name="Content" class="form-control" placeholder="Enter Your Comments" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        <% } %>
-        <div class="mt-4">
-            <% comments.forEach(comment => { %>
-                <div class="comment-item">
-                    <div class="d-flex align-items-center mb-2 redius">
-                        <img src="<%- comment.createdBy.profileImgURL %>" width="50" alt="Profile " class="rounded-circle me-2">
-                        <p><%- comment.createdBy.fullname %></p>
-                    </div>
-                    <p><%- comment.Content %></p>
-                </div>
-            <% }); %>
-        </div>
-    </div>
-
-    <!-- Include Bootstrap JS Bundle with Popper -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <%- include('./partials/script') %>
-</body>
+    <%- include('./partials/scripts') %>
+  </body>
 </html>
-
