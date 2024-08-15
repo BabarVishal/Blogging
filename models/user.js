@@ -54,7 +54,7 @@ userSchema.static(
   async function (email, password) {
     const user = await this.findOne({ email });
     if (!user) throw new Error("User not found!");
-
+    console.log("this is the user when signin up: ", user)
     const salt = user.salt;
     const hashedPassword = user.password;
 
